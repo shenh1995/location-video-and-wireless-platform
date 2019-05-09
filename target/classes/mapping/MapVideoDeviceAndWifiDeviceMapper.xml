@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.dao.MapVideoDeviceAndWifiDeviceMapper">
+	<resultMap id="result" type="MapVideoDeviceAndWifiDevice">
+		<result property="id" column="id"></result>
+		<result property="wifi_device_id" column="wifi_device_id"></result>
+		<result property="video_device_id" column="video_device_id"></result>
+	</resultMap>	
+	<select id="select" resultMap="result"> SELECT * FROM MapVideoDeviceAndWifiDevice</select>
+</mapper>

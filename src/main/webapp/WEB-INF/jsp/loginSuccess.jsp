@@ -9,7 +9,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="format-detection" content="telephone=no">
-<script type="text/javascript" src="./plugins/jquery-1.7.js"></script>  
+<script type="text/javascript" src="./plugins/jquery-1.7.js"></script>
 <title>管理后台</title>
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
@@ -49,37 +49,119 @@
 
 	})
 	
-	$(document).ready(function() {
-		loadBoundInfo();
-	});
-		    function loadBoundInfo() {
-				$.ajax({
-				type:"GET",
-				url:"/demo/getBoundInfos",
-				data:{"username":"1","password":"00"},
-				async: false,
-				success: function(data) {
-					
-					var table = $('#mainContent');
-				//	alert(table);
-				table.empty();
-				for(var l=0;l<=data.length;l++){
-					var content = 
-						'<div class="row">' + 
-								'<div class="col-xs-1">' + data[l].id + '</div>'+
-								'<div class="col-xs-2">' + data[l].mac_name + '</div>' +
-								'<div class="col-xs-1">' + data[l].human_picture_path + '</div>'+
-								'<div class=\"col-xs-2">' + 
-								'<button class="btn btn-success btn-xs" data-toggle="modal" data-target="#reviseSchool">修改</button>' +
-								'<button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteSchool">删除</button>' +
-								'</div>' + 
-								'</div>';
-					table.append(content);	
+		function loadBoundInfo() {
+		$
+				.ajax({
+					type : "GET",
+					url : "/location-video-and-wireless-platform/getBoundInfos",
+					data : {
+						"username" : "1",
+						"password" : "00"
+					},
+					async : false,
+					success : function(data) {
+
+						var table = $('#mainContent');
+						//	alert(table);
+						table.empty();
+						for (var l = 0; l < data.length; l++) {
+							var content = '<div class="row">'
+									+ '<div class="col-xs-1">'
+									+ data[l].id
+									+ '</div>'
+									+ '<div class="col-xs-2">'
+									+ data[l].mac_name
+									+ '</div>'
+									+ '<div class="col-xs-1">'
+									+ '<img src="/imgUrl/'+ data[l].human_picture_path +'" height="40" width="40">'
+									+ '</div>'
+									+ '<div class=\"col-xs-2">'
+									+ '<button class="btn btn-success btn-xs" data-toggle="modal" data-target="#reviseSchool">修改</button>'
+									+ '<button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteSchool">删除</button>'
+									+ '</div>' + '</div>';
+							table.append(content);
 						}
-								}
-							});
+					}
+				});
+	}
+
+		function loadMapInfo() {
+		$
+				.ajax({
+					type : "GET",
+					url : "/location-video-and-wireless-platform/getMapInfos",
+					data : {
+						"username" : "1",
+						"password" : "00"
+					},
+					async : false,
+					success : function(data) {
+
+						var table = $('#deviceMapContent');
+						//	alert(table);
+						table.empty();
+						for (var l = 0; l < data.length; l++) {
+							var content = '<div class="row">'
+									+ '<div class="col-xs-1 ">'
+									+ data[l].id
+									+ '</div>'
+									+ '<div class="col-xs-2">'
+									+ data[l].wifi_device_id
+									+ '</div>'
+									+ '<div class="col-xs-2">'
+									+ data[l].video_device_id
+									+ '</div>'
+									+ '<div class=\"col-xs-2">'
+									+ '<button class="btn btn-success btn-xs" data-toggle="modal" data-target="#reviseSchool">修改</button>'
+									+ '<button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteSchool">删除</button>'
+									+ '</div>' + '</div>';
+							table.append(content);
+						}
+					}
+				});
+	}
+	
+		function loadLastTenPicture() {
+			$
+			.ajax({
+				type : "GET",
+				url : "/location-video-and-wireless-platform/getLastTenPicture",
+				data : {
+					"username" : "1",
+					"password" : "00"
+				},
+				async : false,
+				success : function(data) {
+					var table = $('#tenLastPicture');
+					//	alert(table);
+					table.empty();
+					for (var l = 0; l < data.length; l++) {
+					//	alert(data[l].picture_path);
+						var content = '<div class="left" id="left">'
+								+ '<div class="top" id="top">'
+								+ '<img src="/imgUrl/' 
+								+ data[l].picture_path 
+								+ '" height=100px width=100px>'
+								+ '</div>' 
+								+ '<div class="bottom" id="bottom">' +
+								+ data[l].device_id
+								+ '</div>' 
+								+ '</div>';
+						table.append(content);
+					}
 				}
-		    setInterval(loadBoundInfo, 100000);
+			});
+		}
+		
+	$(document).ready(function() {
+		loadBoundInfo();	
+		loadMapInfo();
+		loadLastTenPicture();
+	});
+
+	setInterval(loadBoundInfo, 100000);
+	setInterval(loadLastTenPicture, 50000);
+
 </script>
 <!--[if lt IE 9]>
   <script src="js/html5shiv.min.js"></script>
@@ -111,11 +193,19 @@
 				data-toggle="tab">
 				<img src="images/icon_rule_grey.png">修改密码
 			</div>
+			<div class="meun-item" href="#user" aria-controls="user" role="tab"
+				data-toggle="tab">
+				<img src="images/icon_user_grey.png">设备映射关系
+			</div>
 		</div>
 		<!-- 右侧具体内容栏目 -->
 		<div id="rightContent">
-			<a class="toggle-btn" id="nimei"> <i
-				class="glyphicon glyphicon-align-justify"></i>
+		   <div class="page_header">
+		      <div  id="tenLastPicture"></div>
+           </div>
+			<div id="page_content">
+			<a class="toggle-btn" id="nimei"> 
+			<i class="glyphicon glyphicon-align-justify"></i>
 			</a>
 			<!-- Tab panes -->
 			<div class="tab-content">
@@ -157,7 +247,194 @@
 					</div>
 
 				</div>
-				<!--地区管理模块-->
+
+				<!--用户管理模块-->
+				<div role="tabpanel" class="tab-pane" id="user">
+					<div class="check-div form-inline">
+						<div class="col-xs-3">
+							<button class="btn btn-yellow btn-xs" data-toggle="modal"
+								data-target="#addUser">添加设备映射关系</button>
+						</div>
+						<div class="col-xs-4">
+							<input type="text" class="form-control input-sm"
+								placeholder="输入文字搜索">
+							<button class="btn btn-white btn-xs ">查 询</button>
+						</div>
+					</div>
+					<div class="data-div">
+						<div class="row tableHeader">
+							<div class="col-xs-2 ">无线设备ID</div>
+							<div class="col-xs-2">摄像头ID</div>
+							<div class="col-xs-2">状态</div>
+							<div class="col-xs-2">操作</div>
+						</div>
+						<div class="tablebody" id="deviceMapContent">
+
+						</div>
+
+					</div>
+					<!--页码块-->
+					<footer class="footer">
+						<ul class="pagination">
+							<li><select>
+									<option>1</option>
+									<option>2</option>
+									<option>3</option>
+									<option>4</option>
+									<option>5</option>
+									<option>6</option>
+									<option>7</option>
+									<option>8</option>
+									<option>9</option>
+									<option>10</option>
+							</select> 页</li>
+							<li class="gray">共20页</li>
+							<li><i class="glyphicon glyphicon-menu-left"> </i></li>
+							<li><i class="glyphicon glyphicon-menu-right"> </i></li>
+						</ul>
+					</footer>
+
+					<!--弹出添加用户窗口-->
+					<div class="modal fade" id="addUser" role="dialog"
+						aria-labelledby="gridSystemModalLabel">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title" id="gridSystemModalLabel">添加设备映射关系</h4>
+								</div>
+								<div class="modal-body">
+									<div class="container-fluid">
+										<form class="form-horizontal">
+											<div class="form-group ">
+												<label for="sName" class="col-xs-3 control-label">无线设备ID：</label>
+												<div class="col-xs-8 ">
+													<input type="email" class="form-control input-sm duiqi"
+														id="sName" placeholder="">
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="sLink" class="col-xs-3 control-label">摄像头ID：</label>
+												<div class="col-xs-8 ">
+													<input type="" class="form-control input-sm duiqi"
+														id="sLink" placeholder="">
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="situation" class="col-xs-3 control-label">状态：</label>
+												<div class="col-xs-8">
+													<label class="control-label" for="anniu"> <input
+														type="radio" name="situation" id="normal">正常
+													</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <label
+														class="control-label" for="meun"> <input
+														type="radio" name="situation" id="forbid"> 禁用
+													</label>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-xs btn-white"
+										data-dismiss="modal">取 消</button>
+									<button type="button" class="btn btn-xs btn-green">保 存</button>
+								</div>
+							</div>
+							<!-- /.modal-content -->
+						</div>
+						<!-- /.modal-dialog -->
+					</div>
+					<!-- /.modal -->
+
+					<!--弹出修改用户窗口-->
+					<div class="modal fade" id="reviseUser" role="dialog"
+						aria-labelledby="gridSystemModalLabel">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title" id="gridSystemModalLabel">修改设备映射关系</h4>
+								</div>
+								<div class="modal-body">
+									<div class="container-fluid">
+										<form class="form-horizontal">
+											<div class="form-group ">
+												<label for="sName" class="col-xs-3 control-label">无线设备ID：</label>
+												<div class="col-xs-8 ">
+													<input type="email" class="form-control input-sm duiqi"
+														id="sName" placeholder="">
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="sLink" class="col-xs-3 control-label">摄像头ID：</label>
+												<div class="col-xs-8 ">
+													<input type="" class="form-control input-sm duiqi"
+														id="sLink" placeholder="">
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="situation" class="col-xs-3 control-label">状态：</label>
+												<div class="col-xs-8">
+													<label class="control-label" for="anniu"> <input
+														type="radio" name="situation" id="normal">正常
+													</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <label
+														class="control-label" for="meun"> <input
+														type="radio" name="situation" id="forbid"> 禁用
+													</label>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-xs btn-white"
+										data-dismiss="modal">取 消</button>
+									<button type="button" class="btn btn-xs btn-green">保 存</button>
+								</div>
+							</div>
+							<!-- /.modal-content -->
+						</div>
+						<!-- /.modal-dialog -->
+					</div>
+					<!-- /.modal -->
+
+					<!--弹出删除用户警告窗口-->
+					<div class="modal fade" id="deleteUser" role="dialog"
+						aria-labelledby="gridSystemModalLabel">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title" id="gridSystemModalLabel">提示</h4>
+								</div>
+								<div class="modal-body">
+									<div class="container-fluid">确定要删除该用户？删除后不可恢复！</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-xs btn-white"
+										data-dismiss="modal">取 消</button>
+									<button type="button" class="btn  btn-xs btn-danger">保
+										存</button>
+								</div>
+							</div>
+							<!-- /.modal-content -->
+						</div>
+						<!-- /.modal-dialog -->
+					</div>
+					<!-- /.modal -->
+
+				</div>
+
+				<!--mac地址和照片绑定关系模块-->
 				<div role="tabpanel" class="tab-pane active" id="scho">
 
 					<div class="check-div form-inline">
@@ -171,11 +448,10 @@
 						<div class="row tableHeader">
 							<div class="col-xs-1 ">编号</div>
 							<div class="col-xs-2 ">MAC地址</div>
-							<div class="col-xs-1">照片路径</div>
+							<div class="col-xs-1">照片</div>
 							<div class="col-xs-2">操作</div>
 						</div>
-						<div class="tablebody" id="mainContent">
-						</div>
+						<div class="tablebody" id="mainContent"></div>
 
 					</div>
 					<!--页码块-->
@@ -270,7 +546,7 @@
 						<!-- /.modal-dialog -->
 					</div>
 					<!-- /.modal -->
-
+   				  </div>	
 				</div>
 			</div>
 		</div>

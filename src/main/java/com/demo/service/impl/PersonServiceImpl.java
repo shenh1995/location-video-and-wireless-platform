@@ -14,7 +14,6 @@ public class PersonServiceImpl implements PersonService {
 	private PersonMapper personMapper;
 
 	public Person login(String name) {		
-		// TODO Auto-generated method stub		
 		return personMapper.select(name);	
 	
 	}

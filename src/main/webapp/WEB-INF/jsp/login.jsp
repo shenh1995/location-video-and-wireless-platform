@@ -40,7 +40,7 @@
 <body>
     <div class="dowebok">
         <div class="logo"></div>
-        <form id = "loginFrm" action="/demo/user" method="post">
+        <form id = "loginFrm" action="/location-video-and-wireless-platform/user" method="post">
         <div class="form-item">
             <input name="username" id="username" type="text" autocomplete="off" placeholder="账号">
             <p class="tip">请输入合法的邮箱地址</p>
