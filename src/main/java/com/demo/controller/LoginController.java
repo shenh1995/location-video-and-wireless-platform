@@ -61,7 +61,7 @@ public class LoginController {
 			return modelAndView;
 		} else {
 			logger.info("this user is not exist");
-			return new ModelAndView("loginSuccess");
+			return new ModelAndView("logFail");
 		}
 	}
 	

@@ -103,9 +103,6 @@
 						for (var l = 0; l < data.length; l++) {
 							var content = '<div class="row">'
 									+ '<div class="col-xs-1 ">'
-									+ data[l].id
-									+ '</div>'
-									+ '<div class="col-xs-2">'
 									+ data[l].wifi_device_id
 									+ '</div>'
 									+ '<div class="col-xs-2">'
@@ -265,7 +262,6 @@
 						<div class="row tableHeader">
 							<div class="col-xs-2 ">无线设备ID</div>
 							<div class="col-xs-2">摄像头ID</div>
-							<div class="col-xs-2">状态</div>
 							<div class="col-xs-2">操作</div>
 						</div>
 						<div class="tablebody" id="deviceMapContent">
